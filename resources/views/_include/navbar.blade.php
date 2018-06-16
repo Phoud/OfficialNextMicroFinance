@@ -33,7 +33,7 @@
       <li class="menu-has-children {{ ( Request::is('/') || Request::is('profile/*') ) ? 'menu-active' : '' }}"><a href="/">{{ __('locales.profile') }}</a>
         <ul>
           <li class="nav-menu"><a class="{{Route::current()->getName() == 'history' ? 'menu-active' : '' }}" href="{{route('history')}}">{{ __('locales.history') }}</a></li>
-          <li class="nav-menu"><a class="{{Route::current()->getName() == 'vision-mission' ? 'menu-active' : ''}}" href="{{route('vision-mission')}}">{{ __('locales.vision-mission') }}</a></li>
+          <li class="nav-menu"><a class="{{Route::current()->getName() == 'vision-mission' ? 'menu-active' : ''}}" href="{{route('home.visionmission')}}">{{ __('locales.vision-mission') }}</a></li>
           <li class="nav-menu"><a class="{{Route::current()->getName() == 'organization-chart' ? 'menu-active' : ''}}" href="{{route('organization-chart')}}">{{ __('locales.organization') }}</a></li>
          </ul>
     </li>    
@@ -55,8 +55,8 @@
       <li class="{{ Route::current()->getName() == 'register' ? 'menu-active' : '' }}"><a href="{{route('register')}}">{{ __('locales.register') }}</a></li>
       <li class="menu-has-children"><a href="{{Session::get('lang') }}">Languages</a>
         <ul>
-      <li><a href="/?lang=en">English</a></li>
-      <li><a href="/?lang=la">Laos</a></li> 
+      <li><a href="{{ url('') }}/{{ Route::current()->uri }}?lang=en">English</a></li>
+      <li><a href="{{ url('') }}/{{ Route::current()->uri }}?lang=la">Laos</a></li> 
         </ul>
       </li>
     </ul>

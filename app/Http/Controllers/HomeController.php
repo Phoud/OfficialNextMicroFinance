@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Page;
 use Illuminate\Http\Request;
+use App\Http\Middleware\Locales;
+
 use Route;
 class HomeController extends Controller
 {
@@ -10,21 +12,17 @@ class HomeController extends Controller
       	return view('pages.home');
       }
       public function history(Request $request){
-      $histories = Page::where('page_id', 'history')->get();
-      $page_history_la = null;
-      $page_history_en = null;
-      foreach ($histories as $key => $history) {
-      if($history->lang==="la"){
-        $page_history_la = Page::find($history->id);
-      }else{
-        $page_history_en = Page::find($history->id);
-      }
-      }
-      return view('pages.profile.history.index', compact("page_history_la", "page_history_en"));
+      $page_history = Page::where('page_id', 'history')->where('lang', (new Locales)->getCurrentLang($request) )->first();
+        if(!isset($page_history))
+          return redirect()->route('home');
+        return view('pages.profile.history.index', compact("page_history", "page_history"));
           
       }
        public function vision_mission(Request $request){
-          return view('pages.profile.vision_mission.index');
+        $page_vision = Page::where('page_id', 'vision-mission')->where('lang', (new Locales)->getCurrentLang($request) )->first();
+        if(!isset($page_vision))
+          return redirect()->route('home');
+        return view('pages.profile.vision_mission.index', compact("page_vision", "page_vision"));
       }
        public function organization(Request $request){
           return view('pages.profile.organization.index');

@@ -7,10 +7,10 @@
         <div class="row">
           
           <div class="col-lg-6 about-img">
-            <img src="{{url('/')}}/img/staff.jpg" alt="">
+            <img src="{{ url('/') }}/img/{{isset($page_history) ? 'image/'. $page_history->image : "staff.jpg"}}" alt="">
           </div>        
           <div class="col-lg-6 content">
-            {!! isset($page_history_la) ? $page_history_la->content : ""!!}
+            {!! isset($page_history) ? $page_history->content : ""!!}
 
           </div>
         </div>

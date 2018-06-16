@@ -4,7 +4,7 @@ Route::group(['prefix' => '/admin'], function(){
 
 Route::get('/',['uses'=>'AdminController@index', 'as' =>'admin.index']);
 Route::get('/history', 'AdminController@history')->name('admin.history');
-Route::get('/vision_mission', 'AdminController@vision_mission')->name('admin.vision');
+Route::get('/vision-mission', 'AdminController@vision_mission')->name('admin.vision');
 Route::get('/organization-chart', 'AdminController@organization')->name('admin.organization');
 // Fiance
 Route::get('/index', 'AdminController@finance')->name('finance.index');

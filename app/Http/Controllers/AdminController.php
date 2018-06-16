@@ -177,36 +177,46 @@ public function PostAbout(Request $request){
   //Profile Function
 
 public function PostHistory(Request $request){
-      $this->validate($request, ['body_la'=> 'required', 'body_en' => 'required']);
+    $this->validate($request, ['body_la'=> 'required', 'body_en' => 'required']);
       $histories = Page::where('page_id', 'history')->get();
       if(count($histories) > 0){
-        $page_history_la = null;
-        $page_history_en = null;
-          foreach ($histories as $key => $history) {
-             if($history->lang==="la"){
-                $page_history_la = Page::find($history->id);
-              }else{
-                $page_history_en = Page::find($history->id);
-              }
-          }
-        if(!isset($page_history_la) || !isset($page_history_en)) return;
+        $page_history_la = Page::where('page_id', 'history')->where('lang', 'la')->first();
+        $page_history_en = Page::where('page_id', 'history')->where('lang', 'en')->first();
+        $getimageName=null;
+        if($request->hasFile('image') ){
+          $this->validate($request, ['image' => 'required|sometimes|image']);
+          $file = $request->file('image') ;
+          $getimageName = md5(date('Y-m-d h:m:s') . microtime()) . time() . '_attach_.' . $file->getClientOriginalExtension();
+          $file->move(public_path('img/image'), $getimageName);
+          unlink(public_path('img/image/'. $page_history_la->image ));
+        }
         $page_history_la->content = $request->body_la;
+        $page_history_la->image = isset($getimageName) ? $getimageName : $page_history_la->image;
         $page_history_la->save();
 
         $page_history_en->content = $request->body_en;
+        $page_history_en->image = isset($getimageName) ? $getimageName : $page_history_en->image;
         $page_history_en->save();
         return back()->with('success', 'Updated Successfully!');
       }else{
+
+        $this->validate($request, ['image' => 'required|sometimes|image']);
+        $file = $request->file('image') ;
+        $getimageName = time().'.'.$file->getClientOriginalExtension();
+        $file->move(public_path('img/image'), $getimageName);
+
         $save = new Page;
         $save->content = $request->body_la;
         $save->lang = "la";
         $save->page_id = "history";
+        $save->image = $getimageName;
         $save->save();
 
         $save = new Page;
         $save->content = $request->body_en;
         $save->lang = "en";
         $save->page_id = "history";
+        $save->image = $getimageName;
         $save->save();
       }
       return back()->with('success', 'Saved successfully!');

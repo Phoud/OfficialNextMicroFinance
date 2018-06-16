@@ -26,6 +26,15 @@ class Locales
         return $next($request);
     }
 
+    public function getCurrentLang($request){
+        if($request->exists('lang')){
+            $lang = $request->input('lang');
+            $lang = $this->exists($lang)? $lang :'en';
+        }else{
+            $lang = Session::has('lang') ? Session::get('lang') : 'en';
+        }
+        return $lang;
+    }
     public function exists($val){
         $exists =false;
         switch($val){

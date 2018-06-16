@@ -7,11 +7,27 @@
 	<li class="nav-item"><a data-toggle="tab" class="nav-link active" href="#tablao">Lao</a></li>
 	<li class="nav-item"><a data-toggle="tab" class="nav-link" href="#tabenglish">English</a></li>
 </ul>
-<form action="{{route('history.store')}}" method="POST">
+<form action="{{route('history.store')}}" method="POST" enctype="multipart/form-data">
 	<br>
-<img class="img-responsive" style="max-height: 100px;" src="{{ url('/') }}/img/staff.jpg" alt="">
-<label>Add Picture</label>
-<input type="file" class="form-control">
+
+<img id="src" class="img-responsive mb-3" style="max-height: 100px;" src="{{ url('/') }}/img/{{isset($page_history_la) ? 'image/'. $page_history_la->image : "staff.jpg"}}" alt="">
+
+<input type="file" name="image" id="target" class="form-control">
+<script>
+		var src = document.getElementById('src');
+		var target = document.getElementById('target');
+
+		var fr = new FileReader();
+		fr.onload = function(e){
+			src.src = this.result;
+		};
+		target.addEventListener("change", function(){
+			if(target.files[0] != null){
+				fr.readAsDataURL(target.files[0]);
+			}
+		
+		})
+	</script>
 <div class="tab-content">
 	{{ csrf_field() }}
 	<div class="tab-pane active" id="tablao">

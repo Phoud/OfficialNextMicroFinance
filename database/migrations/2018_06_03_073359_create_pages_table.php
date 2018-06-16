@@ -18,6 +18,7 @@ class CreatePagesTable extends Migration
             $table->text('content');
             $table->string('page_id');
             $table->enum('lang', ['la', 'en'])->default('en');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
