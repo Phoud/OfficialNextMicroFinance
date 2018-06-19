@@ -1,7 +1,7 @@
 @extends('admins.main')
 @section('content')
 @section('title', 'About Us')
-@section('secondtitle', 'This is About page')
+@section('secondtitle', 'About')
 <div class="panel-body">
 <ul class="nav nav-tabs nav-justified" id ="tab-menu">
 	<li class="nav-item"><a data-toggle="tab" class="nav-link active" href="#tablao">Lao</a></li>

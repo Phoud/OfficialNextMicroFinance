@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Page;
+use App\Service;
+use App\Contactinfo;
 
 class AdminController extends Controller
 {
@@ -111,18 +113,48 @@ public function currency(){
      }
 
 public function service(){
-        $services = Page::where('page_id', 'service')->get();
-        $page_service_la = null;
-        $page_service_en = null;
-        foreach ($services as $key => $service) {
-        if($service->lang==="la"){
-          $page_service_la = Page::find($service->id);
-        }else{
-          $page_service_en = Page::find($service->id);
+        $services = Service::where('lang', 'la')->get();
+       
+        return view('admins.pages.services.service', compact("services"));
         }
-        }
-        return view('admins.pages.services.service', compact("page_service_la", "page_service_en"));
-        }
+
+public function contact(){
+  $contactinfo = Contactinfo::first();
+  return view('admins.pages.contact.contactinfo', compact('contactinfo'));
+}
+
+public function contactPost(Request $request){
+    $this->validate($request, [
+      'address'=>'required',
+      'phone'=>'required',
+      'email'=>'required'
+    ]);
+    $contact = Contactinfo::all();
+    if(count($contact)>0){
+      $update = Contactinfo::first();
+      $update->address = $request->address;
+      $update->phone = $request->phone;
+      $update->email = $request->email;
+      $update->twitter = $request->twitter;
+      $update->facebook = $request->facebook;
+      $update->instagram = $request->instagram;
+      $update->linkin = $request->linkin;
+      $update->save();
+      return back()->with('success', 'Update successful.');
+    }else{
+      $save = new Contactinfo;
+      $save->address = $request->address;
+      $save->phone = $request->phone;
+      $save->email = $request->email;
+      $save->twitter = $request->twitter;
+      $save->facebook = $request->facebook;
+      $save->instagram = $request->instagram;
+      $save->linkin = $request->linkin;
+      $save->save();
+      return back()->with('success', 'Save successful');
+    }
+
+    }
 
 public function about(){
       $abouts = Page::where('page_id', 'about')->get();
@@ -137,6 +169,77 @@ public function about(){
       }
       return view('admins.pages.about.about', compact("page_about_la", "page_about_en"));
      }
+
+public function PostService(Request $request){
+      $this->validate($request, [
+         'body_la'=> 'required',
+         'body_en' => 'required',
+         'service_icon' => 'required',
+         'service_name_la' => 'required',
+         'service_name_en' => 'required'
+        ]);
+
+        $services_la = new Service;
+        $services_la->service_icon = $request->service_icon;
+        $services_la->service_name = $request->service_name_la;
+        $services_la->description = $request->body_la;
+        $services_la->lang = "la";
+        $services_la->service_key = "service_key";
+        $services_la->save(); 
+
+        $service_en = new Service;
+        $service_en->service_icon = $request->service_icon;
+        $service_en->service_name = $request->service_name_en;
+        $service_en->description = $request->body_en;
+        $service_en->service_key = "service_key";
+        $service_en->lang = "en";
+        $service_en->save();
+
+        #SAVE KEY
+        $services_la->service_key = $services_la->id . "_" . $service_en->id;
+        $service_en->service_key = $services_la->id . "_". $service_en->id;
+
+        $services_la->save();
+        $service_en->save();
+
+      return back()->with('success', 'Saved successfully!');
+    }
+
+
+public function editservice($id){
+      $service_la = Service::where('lang', 'la')->where('service_key', $id)->first();
+      $service_en = Service::where('lang', 'en')->where('service_key', $id)->first();
+      return view('admins.pages.services.editservice', compact('service_la', 'service_en'));
+}
+
+public function editservicepost(Request $request, $id){
+  $this->validate($request, [
+         'body_la'=> 'required',
+         'body_en' => 'required',
+         'service_icon' => 'required',
+         'service_name_la' => 'required',
+         'service_name_en' => 'required'
+        ]);
+        $services_la = Service::where('lang', 'la')->where('service_key', $id)->first();
+        $services_la->service_icon = $request->service_icon;
+        $services_la->service_name = $request->service_name_la;
+        $services_la->description = $request->body_la;
+        $services_la->save(); 
+
+        $service_en = Service::where('lang', 'en')->where('service_key', $id)->first();
+        $service_en->service_icon = $request->service_icon;
+        $service_en->service_name = $request->service_name_en;
+        $service_en->description = $request->body_en;
+        $service_en->save();
+      return back()->with('success', 'Update successfully!');
+}
+
+public function serviceDelete($id){
+
+        $delete = Service::where('service_key', $id)->delete();
+
+        return back();
+}
 
 public function PostAbout(Request $request){
       $this->validate($request, ['body_la'=> 'required', 'body_en' => 'required']);
@@ -407,44 +510,6 @@ public function PostCurrency(Request $request){
       }
       return back()->with('success', 'Saved successfully!');
     }
-
-
-
-public function PostService(Request $request){
-      $this->validate($request, ['body_la'=> 'required', 'body_en' => 'required']);
-      $services = Page::where('page_id', 'service')->get();
-      if(count($services) > 0){
-        $page_service_la = null;
-        $page_service_en = null;
-          foreach ($services as $key => $service) {
-             if($service->lang==="la"){
-                $page_service_la = Page::find($service->id);
-              }else{
-                $page_service_en = Page::find($service->id);
-              }
-          }
-        if(!isset($page_service_la) || !isset($page_service_en)) return;
-        $page_service_la->content = $request->body_la;
-        $page_service_la->save();
-        $page_service_en->content = $request->body_en;
-        $page_service_en->save();
-        return back()->with('success', 'Updated Successfully!');
-      }else{
-        $save = new Page;
-        $save->content = $request->body_la;
-        $save->lang = "la";
-        $save->page_id = "service";
-        $save->save();
-
-        $save = new Page;
-        $save->content = $request->body_en;
-        $save->lang = "en";
-        $save->page_id = "service";
-        $save->save();
-      }
-      return back()->with('success', 'Saved successfully!');
-    }
-
 
 
 }

@@ -4,8 +4,7 @@
 <section id="contact" class="wow fadeInUp">
       <div class="container">
         <div class="section-header">
-          <h2>Contact Us</h2>
-          <p>Sed tamen tempor magna labore dolore dolor sint tempor duis magna elit veniam aliqua esse amet veniam enim export quid quid veniam aliqua eram noster malis nulla duis fugiat culpa esse aute nulla ipsum velit export irure minim illum fore</p>
+          <h2>{{ __('locales.contact') }}</h2>
         </div>
 
         <div class="row contact-info">
@@ -14,7 +13,7 @@
             <div class="contact-address">
               <i class="ion-ios-location-outline"></i>
               <h3>Address</h3>
-              <address>A108 Adam Street, NY 535022, USA</address>
+              <address>{{ isset($contactinfo) ? $contactinfo->address: "" }}</address>
             </div>
           </div>
 
@@ -22,7 +21,7 @@
             <div class="contact-phone">
               <i class="ion-ios-telephone-outline"></i>
               <h3>Phone Number</h3>
-              <p><a href="tel:+155895548855">+1 5589 55488 55</a></p>
+              <p><a href="tel:+856{{ isset($contactinfo) ? $contactinfo->phone: "" }}">{{ isset($contactinfo) ? $contactinfo->phone: "" }}</a></p>
             </div>
           </div>
 
@@ -30,7 +29,7 @@
             <div class="contact-email">
               <i class="ion-ios-email-outline"></i>
               <h3>Email</h3>
-              <p><a href="mailto:info@example.com">info@example.com</a></p>
+              <p><a href="mailto:{{ isset($contactinfo) ? $contactinfo->email: "" }}">{{ isset($contactinfo) ? $contactinfo->email: "" }}</a></p>
             </div>
           </div>
 

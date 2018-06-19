@@ -26,6 +26,11 @@ Route::post('/credit', 'AdminController@PostCredit')->name('credit.store');
 Route::post('/payment', 'AdminController@PostPayment')->name('payment.store');
 Route::post('/currency', 'AdminController@PostCurrency')->name('currency.store');
 Route::post('/service', 'AdminController@PostService')->name('service.store');
+Route::get('/editservice/{id}', 'AdminController@editservice')->name('edit.service');
+Route::post('/editservice/{id}', 'AdminController@editservicepost')->name('edit.service.update');
+Route::delete('/deleteservice/{id}', 'AdminController@serviceDelete')->name('service.delete');
+Route::get('/contact', 'AdminController@contact')->name('admin.contact');
+Route::post('/contact', 'AdminController@contactPost')->name('admin.contact.store');
 });
 
 

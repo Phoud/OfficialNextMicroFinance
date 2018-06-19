@@ -33,6 +33,7 @@ Route::get('/services',['uses'=>'HomeController@service', 'as' =>'service']);
 Route::get('/activity',['uses'=>'HomeController@activity', 'as' =>'activity']);
 Route::get('/register',['uses'=>'HomeController@register', 'as' =>'register']);
 Route::get('/contact',['uses'=>'HomeController@contact', 'as' =>'contact']);
+Route::get('/servicedetail/{id}', ['uses' => 'HomeController@servicedetail', 'as' =>'servicedetail']);
 
 
  });

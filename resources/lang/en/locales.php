@@ -22,6 +22,9 @@ return [
 'history'=> 'History',
 'organization-chart'=> 'Our Organization Chart',
 'service'=> 'Our Services',
+'more'=> 'Click to read more',
+'about'=>'About Us',
+'contact'=> 'Contact Us',
 
 
 ];

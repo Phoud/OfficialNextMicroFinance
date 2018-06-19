@@ -2,19 +2,17 @@
   <section id="topbar" class="d-none d-lg-block">
     <div class="container clearfix">
       <div class="contact-info float-left">
-        <i class="fa fa-envelope-o"></i> <a href="mailto:contact@example.com">contact@example.com</a>
-        <i class="fa fa-phone"></i><<a href="" title=""> +1 5589 55488 55</a>
+        <i class="fa fa-envelope-o"></i> <a href="mailto:{{ isset($contactinfo) ? $contactinfo->email: "" }}">{{ isset($contactinfo) ? $contactinfo->email: "" }}</a>
+        <i class="fa fa-phone"></i><<a href="tel:+856{{ isset($contactinfo) ? $contactinfo->phone: "" }}" title="">{{ isset($contactinfo) ? $contactinfo->phone: "" }}</a>
       </div>
       <div class="social-links float-right">
-        <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
-        <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
-        <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
-        <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
-        <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+        <a href="{{ isset($contactinfo) ? $contactinfo->twitter: "" }}" target="_blank" class="twitter"><i class="fa fa-twitter"></i></a>
+        <a href="{{ isset($contactinfo) ? $contactinfo->facebook: "" }}" target="_blank" class="facebook"><i class="fa fa-facebook"></i></a>
+        <a href="{{ isset($contactinfo) ? $contactinfo->instagram: "" }}" target="_blank" class="instagram"><i class="fa fa-instagram"></i></a>
+        <a href="{{ isset($contactinfo) ? $contactinfo->linkin: "" }}" target="_blank" class="linkedin"><i class="fa fa-linkedin"></i></a>
       </div>
     </div>
   </section>
-
   <!--==========================
     Header
   ============================-->
@@ -55,8 +53,8 @@
       <li class="{{ Route::current()->getName() == 'register' ? 'menu-active' : '' }}"><a href="{{route('register')}}">{{ __('locales.register') }}</a></li>
       <li class="menu-has-children"><a href="{{Session::get('lang') }}">Languages</a>
         <ul>
-      <li><a href="{{ url('') }}/{{ Route::current()->uri }}?lang=en">English</a></li>
-      <li><a href="{{ url('') }}/{{ Route::current()->uri }}?lang=la">Laos</a></li> 
+      <li><a href="{{ url()->current() }}?lang=en">English</a></li>
+      <li><a href="{{ url()->current() }}?lang=la">Laos</a></li> 
         </ul>
       </li>
     </ul>

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Page;
+use App\Service;
 use Illuminate\Http\Request;
 use App\Http\Middleware\Locales;
+use App\Contactinfo;
 
 use Route;
 class HomeController extends Controller
@@ -32,10 +34,14 @@ class HomeController extends Controller
       }
 
        public function about(Request $request){
-      	return view('pages.about.index');
+        $about = Page::where('page_id', 'about')->where('lang', (new Locales)->getCurrentLang($request))->first();
+        if(!isset($about))
+          return redirect()->route('home');
+      	return view('pages.about.index', compact("about"));
       }
          public function service(Request $request){
-      	return view('pages.services.index');
+          $services = Service::where('lang', (new Locales)->getCurrentLang($request))->get();
+      	return view('pages.services.index', compact("services"));
       }
       //finance 
        public function finance(Request $request){
@@ -67,8 +73,15 @@ class HomeController extends Controller
           return view('pages.activity.index');
       }
 
-      public function contact(Request $request){
-          return view('pages.contact.index');
+      public function contact(){
+        $contactinfo = Contactinfo::first();
+          return view('pages.contact.index', compact('contactinfo'));
 }
+      public function servicedetail(Request $request, $id){
+        $service_detail = Service::where('service_key', $id)
+        ->where('lang', (new Locales)->getCurrentLang($request) )->first();
+        if(!isset($service_detail)) return redirect()->route('home');
+        return view('pages.services.servicedetail', compact('service_detail'));
+      }
 
 }

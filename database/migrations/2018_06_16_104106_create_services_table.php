@@ -17,6 +17,7 @@ class CreateServicesTable extends Migration
             $table->increments('id');
             $table->string('service_icon');
             $table->string('service_name');
+            $table->string('service_key');
             $table->text('description');
             $table->enum('lang', ['la', 'en'])->default('en');
             $table->timestamps();
